@@ -1,11 +1,12 @@
-// converting upload folder into zip folder with unique name (server-side).
+// converting a folder into zip folder with unique name
+
+// Required { node } { adm-zip }
 
 const AdmZip = require("adm-zip")
 
 var filename  = Date.now()+".zip"
 
 async function createZipArchive(){
- 
 try 
 {
     const zip = new AdmZip();
@@ -18,6 +19,5 @@ catch (e)
 {
     console.log(`Something went wrong. ${e}`);
 }
-
 }
 createZipArchive();

@@ -1,4 +1,4 @@
-// Basic validation using JOI Package 
+// Basic validation using Joi and phone Package 
 
 // Requied Package {JOI} {Phone}
 

@@ -1,8 +1,10 @@
 // Basic validation using JOI Package 
 
-// Requied Package {JOI}
+// Requied Package {JOI} {Phone}
 
 const Joi = require("joi");
+
+const {phone} = require('phone');
 
 const isValidEmail = (email)=>{
      
@@ -35,4 +37,15 @@ const isValidName = (name)=>{
     if(value) { return true }
 }
 
+const phoneNumberValidation = (countryCode,phoneNumber)=>{
+
+    const number =  countryCode + phoneNumber
+
+    const isValid  =  phone(number).isValid
+
+    if(isValid) { return true }
+     
+    return false
+   
+}
 

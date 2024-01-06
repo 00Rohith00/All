@@ -1,4 +1,3 @@
-
 // Demo
 
 // Required packages: { node } { selenium-webdriver } { chromedriver } 
@@ -49,7 +48,6 @@ for(var n of body )
     
 }
 
-driver.close();
+//driver.close();
 
 })()
-

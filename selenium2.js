@@ -48,3 +48,5 @@ const verifyDoctorRegisterNumber = async (year, number,medicalCouncil) => {
 verifyDoctorRegisterNumber("1960" , "12345", "Madras Medical Council")
 
 export { verifyDoctorRegisterNumber };
+
+

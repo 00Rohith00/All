@@ -1,0 +1,403 @@
+                                             AWS S3 Service:
+                                             _______________
+
+step 1  :  Login to your AWS account either root user or IAM user.
+
+step 2  :  Before creating an s3 bucket, we need to create an IAM user inside our AWS account which is used to access our s3 bucket from outside(node js).
+
+step 3  :  Creating IAM user: 
+
+          (*) {search IAM user}
+          (*) {click users} 
+          (*) {click create user} 
+          (*) {keep unique name & click next} 
+          (*) {select Add Attach Policy} 
+          (*) {select {AdministratorAccess} &  {AWSCompromisedKeyQuarantineV2} & next} 
+          (*) {create user}
+          (*) {click created user}
+          (*) click {create access key}
+          (*) {click CLI & confirmation & next}
+          (*) {click create access key}
+
+          (*) {store access key and secrete access key values in notepad} //pre-request things
+          (*) {Done and confirm}
+
+step 4  :  Clone this git repo {https://github.com/00Rohith00/aws.git} {repo is in private}  
+
+step 5  :  Creating a s3 bucket from node js                     --> Refer { CreateBucker.v3.js  } file.
+ 
+step 6  :  Insert an object into a bucket from node js           --> Refer { ObjectUploaad.v3.js } file.
+
+step 7  :  Retrieve an object from the bucket through node js    --> Refer { ObjectRetrive.v3.js } file.
+
+           Similar to all manipulations, refer to the git repo 
+ 
+step 8  :  In node js To make an object or bucket as public, use {ACL: "public-read"}. default value is private.
+
+           example : const params =
+                 {
+                       Bucket: bucketName + path,
+                       Key: key,
+                       Body: buffer,
+                       ContentEncoding: 'base64',
+                       ContentType: 'image/jpeg',
+                       ACL:'public-read'
+                 };
+
+
+(1) object URL pattern  :   https://${bucket_name}.s3.${region}.amazonaws.com/${filename}
+
+(2) Github Link         :   https://github.com/manishaac2002/nodejs-bio-data.git            --> uploadFile.js (just observe).
+
+
+In AWS:
+-------
+
+(*) Creating an public bucket ---> Enable ACL and Block All access = off
+(*) Creating an public object ---> keep bucket as public and open permission --> Edit ACL --> Everyone public access ---> enable read  
+
+________________________________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________________________________
+
+                                              AWS EC2 Service: 
+                                              ________________
+
+(1) Creating an EC2 Instance:
+-----------------------------
+
+step 1  :   Login to your AWS account either root user or IAM user.
+
+step 2  :   Search EC2 and create a instance {instance --> Launch instance}.
+
+            (*) { name }                 -->  { unique name } 
+            (*) { select os (AMI) }      -->  { ubuntu }
+            (*) { select ram & cpu }     -->  { free tire }
+            (*) { key pair }             -->  { use existing one or create a new one }
+            
+                 (#) click create new key pair and enter unique name
+                 (#) select RSA & .pem & click create key pair
+ 
+            (*) { network settings }     --> { allow ssh (my ip) , https , http }
+            (*) { configure settings }   --> { GiB (gp3) }
+            (*) Launch Instance
+     
+step 3  :   Now our EC2 public ip is not static. To make it static create elastic IPs.
+
+            (*) { search elastic ips & click allocate elastic ip address & tagename & allocate }
+            (*) { select that ip --> action --> allocate elastic ip address --> choose an instance & private instance & check-box & associate }
+
+step 4  :   Now we successfully maked our public ip as static 
+
+step 5  :   For launching our instance we required three things { username } { password [keypair] } { public ip }
+
+step 6  :   By connecting an instance we can get only one thing {username}.
+
+step 7  :   Now our keypair is in form of .pem but .ppk ext is required for ubunto os.
+
+step 8  :   Download required softwares (putty and puttygen)
+
+            Download link  :   https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+
+            putty          :   running our ubuntu os instance.          putty.zip (a .ZIP archive of all the above except PuTTYtel and pterm) 
+
+            puttygen       :   converting pem to ppk ext.               puttygen.exe (a RSA and DSA key generation utility)
+
+step 9  :   open puttygen & click load & select downloaded key pair(.pem)file & save private key (save converted ppk in local disk).
+
+step 10 :   now we have {username} ,{key pair(.ppk)} ,{public ip}  
+
+            (#) key pair value is always encryption form 
+
+step 11 :   with an help of putty we can launch our ubunto os instance.
+ 
+            (*) paste static ip address in session --> Host Name (or IP address).
+            (*) connection --> ssh --> auth --> credentails --> private key file (upload converted ppk file) --> open
+            (*) enter user name (ubuntu) 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(2) Node app in EC2 Instance:    [ubuntu user]
+-----------------------------
+
+step 1  :   sudo apt update
+
+step 2  :   sudo apt upgrade
+
+step 3  :   sudo apt install -y git htop wget
+
+step 4  :   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+step 5  :   export NVM_DIR="$HOME/.nvm"
+
+step 6  :   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+step 7  :   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+step 8  :   nvm --version
+
+step 9  :   nvm install --lts 
+
+step 10 :   node --version
+
+step 11 :   npm -v
+
+step 12 :   cd /home/ubuntu
+
+step 13 :   git clone https://github.com/saasscaleup/nodejs-ssl-server.git     --> (clone our application code from git)
+
+step 14 :   cd nodejs-ssl-server                                               --> (cd folder name)
+
+step 15 :   npm install
+
+step 16 :   node app.js                                                        --> (run main file)
+
+step 17 :   add port number in security group (in aws ec2)                     --> (open inbound --> add rules --> { type = custom tcp } --> { port range = 3000(our port number) } --> { source type = ipv4 } --> {source = 0.0.0.0/0})
+
+step 18 :   run public ip + port number in browser                             --> XX.XXX.XXX.XX:3000   {http}
+
+step 19 :   npm install -g pm2                                          
+
+step 20 :   pm2 start app.js --name=nodejs-ssl-server                          --> (name = folder name)
+
+step 21 :   pm2 save
+
+step 22 :   pm2 startup
+
+step 23 :   sudo apt install nginx
+
+step 24 :   sudo nano /etc/nginx/sites-available/default
+
+step 25 :
+            proxy_pass http://localhost:3000; #whatever port your app runs on
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;                                 --> ( paste after # try_files $uri $uri/ =404; & also localhost: port number(required one)
+
+            root /home/ubuntu/node-ssl-server;                                --> (folder name  = node-ssl-server)
+
+
+step 26 :   save above changes
+ 
+step 27 :   sudo nginx -t
+
+step 27 :   sudo service nginx restart
+
+step 28 :   now we can run with or without port number example [http://XX.XXX.XXX.XX/ (or) http://XX.XXX.XXX.XX/:3000]
+
+step 29 :   GOdaddy -- { add new dns } -- { type = 'A'} { name = 'free'} { value = 'public id'}  { ttl = anyone }
+
+step 30 :   Instead of using ip + post number we can use free.example.com 
+
+step 31 :   sudo snap install core; sudo snap refresh core
+
+step 32 :   sudo apt remove certbot
+
+step 33 :   sudo snap install --classic certbot
+
+step 34 :   sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+step 35 :   sudo nano /etc/nginx/sites-available/default
+
+step 36 :   server_name free.example.com;                           ---> save changes
+
+step 37 :   sudo nginx -t
+
+step 38 :   sudo systemctl reload nginx
+
+step 39 :   sudo certbot --nginx -d free.example.com
+
+step 40 :   enter email { email@gmail.com }-- yes -- no
+
+step 41 :   ssl added { free.example.com } run this in browser
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(3) Docker in EC2 Instance:  [ubuntu user]
+---------------------------
+
+step 1  : sudo apt update
+
+step 2  : sudo apt upgrade
+
+step 3  : sudo apt install apt-transport-https ca-certificates curl software-properties-common 
+
+step 4  : sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add-
+
+step 5  : sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+
+step 6  : sudo apt install docker.io
+
+step 7  : systemctl status docker
+
+
+(#) systemctl enable docker          // if docker status is stopped
+
+            (or)
+
+(#) systemctl start docker           // if docker status is stopped
+
+(#) systemctl stop docker            // To stop docker 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(4) Docker and Mysql inside EC2 Instance + WorkBench Connection:
+----------------------------------------------------------------
+
+ step 1 :  sudo docker pull mysql:latest
+
+ step 2 :  sudo docker run -d --name my-mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:latest                
+
+ step 3 :  add security group in aws ec2 (edit inbound)
+ 
+           -> type         =  custopm tcp
+           -> protocol     =  TCP
+           -> portrange    =  3306
+           -> source       =  anywhere-ipv4
+
+ step 4 :  open workbench and create new connection 
+
+           -> connection name     =  { something }
+           -> connection method   =  { standard[TCP/IP] }
+           -> hostname            =  { aws ec2 - public ip} 
+           -> username            =  { root }
+           -> password            =  { root }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+executing mysql cmds inside docker:
+-----------------------------------
+
+ sudo docker exec -it my-mysql bash
+ 
+ mysql -uroot -p -A
+
+ password = root
+  
+ execute your query
+  
+ exit
+  
+ exit
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+general docker commands:
+------------------------
+
+ docker pull image_name                                         // To pull images
+
+ docker run --name container_name image_name                    // To create a container and run
+
+ docker start container_name                                    // To start(run) the container
+
+ docker stop container_name                                     // To stop the running container
+
+ docker ps                                                      // To see all running containers    
+
+ docker ps -a                                                   // To see all containers
+
+ docker rm container_name                                       // To remove container
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+source:
+-------
+
+(1) ec2 learning part:
+----------------------
+
+video 1 :  https://youtu.be/qOwTuv-7BPU?si=3lakp819bSK9HNhd
+
+video 2 :  https://youtu.be/28U6amsyAik?si=zkSR1x4U6vF_q9N0
+
+video 3 :  https://youtu.be/oVyI4i8kEyI?si=lpT8aQgyCVdozeQl
+
+
+(2) ec2 & nodejs server:
+------------------------
+
+video 1       : https://youtu.be/yhiuV6cqkNs?si=w_WdbDhah_CJC-Lu
+
+github link   : https://github.com/saasscaleup/nodejs-ssl-server
+
+________________________________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

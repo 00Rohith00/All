@@ -103,7 +103,7 @@ step 8  :   Download required softwares (putty and puttygen)
 
             puttygen       :   converting pem to ppk ext.               puttygen.exe (a RSA and DSA key generation utility)
 
-step 9  :   open puttygen & click load & select downloaded key pair(.pem)file & save private key (save converted ppk in local disk).
+step 9  :   open puttygen  & click load & select downloaded key pair(.pem)file & save private key (save converted ppk in local disk).
 
 step 10 :   now we have {username} ,{key pair(.ppk)} ,{public ip}  
 
